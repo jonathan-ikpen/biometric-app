@@ -19,7 +19,8 @@ export default function Home() {
       });
 
       console.log(fetch);
-      // toast.success("Registration successful");
+
+      fetch.statusText == "OK" && toast.success("Registration successful");
     } catch (error) {
       console.log("Client: ", error);
     }
@@ -33,6 +34,8 @@ export default function Home() {
         challenge,
       });
       console.log(fetch);
+
+      fetch.statusText == "OK" && toast.success("login successful!");
     } catch (error) {
       console.log(error);
     }
