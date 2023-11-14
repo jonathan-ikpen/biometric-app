@@ -3,8 +3,10 @@ import { useState, FormEvent } from "react";
 import axios from "@/lib/axios";
 import { fingerRegClient, fingerAuthClient } from "@/lib/fingerprint_client";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   const [inputValue, setInputValue] = useState<string>("");
 
   const handleSubmit = async () => {
@@ -20,7 +22,10 @@ export default function Home() {
 
       console.log(fetch);
 
-      fetch.statusText == "OK" && toast.success("Registration successful");
+      if (fetch.statusText == "OK") {
+        toast.success("Registration successful");
+        // router.push("/profile");
+      }
     } catch (error) {
       console.log("Client: ", error);
       toast.error("registration failed");
@@ -36,7 +41,10 @@ export default function Home() {
       });
       console.log(fetch);
 
-      fetch.statusText == "OK" && toast.success("login successful!");
+      if (fetch.statusText == "OK") {
+        toast.success("login successful!");
+        router.push("/profile");
+      }
     } catch (error) {
       console.log(error);
       toast.error("login failed");

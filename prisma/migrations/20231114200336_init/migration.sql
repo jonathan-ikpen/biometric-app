@@ -20,3 +20,6 @@ CREATE TABLE "Credential" (
     "algorithm" TEXT NOT NULL,
     CONSTRAINT "Credential_id_fkey" FOREIGN KEY ("id") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");

@@ -49,7 +49,8 @@ export async function POST(req: Request) {
     );
 
     return NextResponse.json({
-      authenticationParsed,
+      success: true,
+      data: authenticationParsed,
     });
   } catch (error) {
     console.log("Server Authentication: ", error);
