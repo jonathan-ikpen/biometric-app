@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     // const expected = {
     //   challenge: challenge,
     //   origin:
-    //     process.env.NEXT_PUBLIC_MODE !== "production"
+    //     process.env.NODE_ENV !== "production"
     //       ? "http://localhost:3000"
     //       : "https://biometric-app.vercel.app",
     //   userVerified: true,

@@ -1,6 +1,6 @@
 "use client";
 import { useState, FormEvent } from "react";
-import axios from "axios";
+import axios from "@/lib/axios";
 import { fingerRegClient, fingerAuthClient } from "@/lib/fingerprint_client";
 import toast from "react-hot-toast";
 
@@ -12,7 +12,7 @@ export default function Home() {
     const { registration, challenge } = await fingerRegClient(inputValue);
 
     try {
-      const fetch = await axios.post("/api/register", {
+      const fetch = await axios.post("/register", {
         registration,
         challenge,
         username: inputValue,
@@ -28,7 +28,7 @@ export default function Home() {
   const handleAuth = async () => {
     try {
       const { authentication, challenge } = await fingerAuthClient();
-      const fetch = await axios.post("/api/authenticate", {
+      const fetch = await axios.post("/authenticate", {
         authentication,
         challenge,
       });
