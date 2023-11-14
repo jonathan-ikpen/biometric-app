@@ -23,6 +23,7 @@ export default function Home() {
       fetch.statusText == "OK" && toast.success("Registration successful");
     } catch (error) {
       console.log("Client: ", error);
+      toast.error("registration failed");
     }
   };
 
@@ -38,6 +39,7 @@ export default function Home() {
       fetch.statusText == "OK" && toast.success("login successful!");
     } catch (error) {
       console.log(error);
+      toast.error("login failed");
     }
   };
 
