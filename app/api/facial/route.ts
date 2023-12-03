@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import * as faceapi from 'face-api.js';
 import { detectFace, matchFaces } from '@/lib/faceRecognition';
 import {NextResponse} from "next/server";
@@ -15,10 +14,10 @@ const loadModels = async () => {
 loadModels()
 
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: Request) {
     try {
-
-        const { referenceImage, capturedImage } = req.body;
+        const body = await req.json();
+        const { referenceImage, capturedImage } = body;
 
         const referenceImageElement = await faceapi.fetchImage(referenceImage);
         const capturedImageElement = await faceapi.fetchImage(capturedImage);
