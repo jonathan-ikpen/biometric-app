@@ -1,47 +1,51 @@
-// pages/api/recognize.ts
-
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as faceapi from 'face-api.js';
+import { detectFace, matchFaces } from '@/lib/faceRecognition';
+import {NextResponse} from "next/server";
 
-// Import the pre-built browser-compatible bundle
-import 'face-api.js/build/face-api.min.js';
 
 // Load face-api.js models
 const loadModels = async () => {
-    await faceapi.nets.tinyFaceDetector.loadFromUri('/models-tinyFaceDetector');
-    await faceapi.nets.faceLandmark68Net.loadFromUri('/models-faceLandmark68Net');
-    await faceapi.nets.faceRecognitionNet.loadFromUri('/models-faceRecognitionNet');
+    await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+    await faceapi.nets.ssdMobilenetv1.loadFromUri('/models')
+    await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+    await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
 };
 
-// Function to recognize faces
-const recognizeFace = async (imageDataURL: string) => {
-    await loadModels();
+loadModels()
 
-    const img = await faceapi.fetchImage(imageDataURL);
-    const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
 
-    if (detections) {
-        // Perform further face recognition logic here
-        // Return relevant information or status
-        return { success: true, message: 'Face recognized!' };
-    } else {
-        return { success: false, message: 'Face not recognized.' };
-    }
-};
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
+    try {
 
-// API route handler
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method === 'POST') {
-        const { imageDataURL } = req.body;
+        const { referenceImage, capturedImage } = req.body;
 
-        try {
-            const result = await recognizeFace(imageDataURL);
-            res.status(200).json(result);
-        } catch (error) {
-            console.error('Error recognizing face:', error);
-            res.status(500).json({ success: false, message: 'Internal server error' });
+        const referenceImageElement = await faceapi.fetchImage(referenceImage);
+        const capturedImageElement = await faceapi.fetchImage(capturedImage);
+
+        const referenceDetection = await detectFace(referenceImageElement);
+        const capturedDetection = await detectFace(capturedImageElement);
+
+        console.log(referenceDetection, capturedDetection)
+
+        if (referenceDetection && capturedDetection) {
+            const isMatched = matchFaces(
+                referenceDetection.descriptor,
+                capturedDetection.descriptor
+            );
+
+            return NextResponse.json({
+                success: true,
+                isMatched
+            });
+        } else {
+            return NextResponse.json({
+                success: false,
+                msg: "Face not detected in either image",
+            });
         }
-    } else {
-        res.status(405).json({ success: false, message: 'Method not allowed' });
+    } catch (error) {
+        console.error('Error during face recognition:', error);
+        return new NextResponse("Internal error", { status: 500 });
     }
-};
+}

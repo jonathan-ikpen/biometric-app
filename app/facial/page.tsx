@@ -2,8 +2,14 @@
 import Camera from "@/app/facial/components/camera";
 import * as faceapi from 'face-api.js';
 import { useEffect, useState } from 'react';
+import axios from "axios";
 import toast from "react-hot-toast"
-import { detectFace, loadFaceRecognition, matchFaces } from '@/lib/faceRecognition';
+import { detectFace, loadFaceRecognition, matchFaces, matchFaceWithSsd } from '@/lib/faceRecognition';
+
+// Import the pre-built browser-compatible bundle
+import '../../face-api.min.js'
+import '/face-api.min.js'
+
 
 const Home: React.FC = () => {
     const [referenceImage, setReferenceImage] = useState<string | null>(null);
@@ -13,27 +19,103 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         loadFaceRecognition(setModelLoading);
-    }, []);
+    });
 
     const handleCapture = async (imageSrc: string) => {
-        setLoading(true)
+        setLoading(true);
+
         try {
             if (referenceImage) {
-                const referenceImageElement = await faceapi.fetchImage(referenceImage);
-                const capturedImageElement = await faceapi.fetchImage(imageSrc);
+                const [referenceImageElement, capturedImageElement] = await Promise.all([
+                    faceapi.fetchImage(referenceImage),
+                    faceapi.fetchImage(imageSrc)
+                ]);
 
-                const referenceDetection = await detectFace(referenceImageElement);
-                const capturedDetection = await detectFace(capturedImageElement);
+                console.log(referenceImageElement, capturedImageElement);
+
+
+                const [referenceDetection, capturedDetection] = await Promise.all([
+                    faceapi.detectSingleFace(referenceImageElement, new faceapi.SsdMobilenetv1Options()).withFaceLandmarks().withFaceDescriptor(),
+                    faceapi.detectSingleFace(capturedImageElement, new faceapi.SsdMobilenetv1Options()).withFaceLandmarks().withFaceDescriptor()
+                ]);
+
+                console.log("Reference Detection:", referenceDetection);
+                console.log("Captured Detection:", capturedDetection);
+
 
                 if (referenceDetection && capturedDetection) {
-                    console.log("Comparing Images...")
+                    console.log("Comparing Images...");
                     const isMatched = matchFaces(
                         referenceDetection.descriptor,
                         capturedDetection.descriptor
                     );
 
                     setIsMatch(isMatched);
-                    isMatched ? toast.success('Face Matched') : toast.error("Does Not Match")
+                    isMatched && toast.success('Face Matched');
+                    !isMatched && toast.error("Does Not Match");
+                } else {
+                    console.log("Couldn't capture: (ref, cap)", referenceDetection, capturedDetection);
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+
+    const handleCapture2 = async (imageSrc: string) => {
+        setLoading(true);
+
+        console.log(referenceImage, imageSrc)
+
+        try {
+            if (referenceImage) {
+
+                const response = await axios.post('/api/facial', {
+                    referenceImage,
+                    capturedImage: imageSrc
+                })
+
+                if (response.status == 200) {
+                    console.log(response)
+                    const { isMatched } = response.data;
+
+                    setIsMatch(isMatched);
+                    isMatched ? toast.success('Face Matched') : toast.error('Face Not Matched');
+                } else {
+                    console.error('Server error:', response.statusText);
+                    toast.error('Server error');
+                }
+            }
+        } catch (err) {
+            console.error('Error during face recognition:', err);
+            toast.error('Error during face recognition');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    const handleCapture3 = async (imageSrc: string) => {
+        setLoading(true)
+        try {
+            if (referenceImage) {
+                const referenceImageElement = await faceapi.fetchImage(referenceImage);
+                const capturedImageElement = await faceapi.fetchImage(imageSrc);
+
+                try {
+
+                    console.log("Comparing Images...")
+                    const matched = await matchFaceWithSsd(referenceImageElement, capturedImageElement)
+
+                    console.log(await matched)
+                    // setIsMatch(true);
+                    // isMatch ? toast.success('Face Matched') : toast.error("Does Not Match")
+                } catch(err) {
+                    console.log(err)
                 }
             }
 
@@ -41,8 +123,7 @@ const Home: React.FC = () => {
             console.log(err)
         }
         setLoading(false)
-    };
-
+    }
 
 
     return (
