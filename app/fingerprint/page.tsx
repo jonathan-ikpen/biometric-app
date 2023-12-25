@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link"
 
-export default function Home() {
+export default function Fingerprint() {
   const router = useRouter();
   const [inputValue, setInputValue] = useState<string>("");
 
@@ -53,19 +53,38 @@ export default function Home() {
   };
 
   return (
-          <div className="max-h-screen flex items-center justify-center text-[#333] px-40">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold pb-10 border-b border-[#666]">Welcome to PTI Student Database System</h1>
-              <div className="text-lg py-6 flex flex-col gap-4">
-                <p className={'font-bold'}>🔒 Secure Authentication</p>
-                <p className={'text-left'}> Experience enhanced security with facial recognition and fingerprint technology, ensuring accurate
-                  and efficient student authentication.</p>
-                <p className={'italic text-[#666]'}>Built by Project Group 7</p>
-              </div>
-              <Link href={'/register'} className="bg-[#333] text-white p-4 font-bold mt-10">
-                Get Started
-              </Link>
-            </div>
-          </div>
+    <main className="flex max-h-screen flex-col gap-40 fitems-center fjustify-between px-24">
+      <div className="w-full flex flex-col items-center">
+        <h1 className="text-5xl font-bold mb-10">Fingerprint Authenticator</h1>
+
+        <div className="text-center">
+          <input
+            type="text"
+            className="w-96 bg-slate-50 p-4 rounded"
+            placeholder="username"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+          <br />
+          <br />
+          <button
+            onClick={handleSubmit}
+            className=" p-2 bg-slate-300 text-xs rounded"
+          >
+            Register
+          </button>
+          <button
+            className=" p-2 bg-slate-100 text-xs ml-6 rounded"
+            onClick={handleAuth}
+          >
+            Authenticate
+          </button>
+        </div>
+      </div>
+      <div className="w-full flex flex-col items-center">
+        <Link className=" bg-[#333] text-white p-4 font-bold mb-10" href={'/facial/v2'}>Facial Recognition</Link>
+
+      </div>
+    </main>
   );
 }

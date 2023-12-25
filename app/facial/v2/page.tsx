@@ -1,27 +1,53 @@
-// components/FaceRecognition.tsx
-"use client"
-import React, { useEffect, useRef, useState } from 'react';
+'use client'
+import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
-import toast from "react-hot-toast";
-import * as faceapi from 'face-api.js';
+import toast from 'react-hot-toast';
 
-const FaceRecognition: React.FC = () => {
+const comparePics = async (webCamImage: string, uploadedImage: string) => {
+    try {
+        // Ensure both images are valid base64-encoded strings
+        // const base64Regex = /^data:image\/[a-zA-Z]+;base64,/;
+        //
+        // if (!base64Regex.test(webCamImage) || !base64Regex.test(uploadedImage)) {
+        //     throw new Error('Invalid base64-encoded image format');
+        // }
+
+        const data = {
+            gallery: [uploadedImage],
+            probe: [webCamImage],
+            search_mode: 'ACCURATE',
+        };
+
+        const response = await fetch(`https://eu.opencv.fr/compare`, {
+            method: 'POST',
+            headers: {
+                'X-API-Key': `${process.env.NEXT_PUBLIC_OPENCV_KEY}`,
+                'Content-Type': 'application/json',
+                accept: 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        return response.json();
+    } catch (error) {
+        console.error('Error during face recognition:', error);
+        throw error;
+    }
+};
+
+const FaceRegOpencv = () => {
     const webcamRef = useRef<Webcam>(null);
     const [uploadedImage, setUploadedImage] = useState<string | null>(null);
     const [isMatch, setIsMatch] = useState<boolean | null>(null);
-
-    const loadModels = async () => {
-        await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
-        await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
-        await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
-    };
+    const [loading, setLoading] = useState(false);
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setUploadedImage(reader.result as string);
+                const base64String = reader.result as string;
+                setUploadedImage(base64String.split(",")[1] || ''); // Remove data:image/jpeg;base64, prefix
             };
             reader.readAsDataURL(file);
         }
@@ -29,55 +55,49 @@ const FaceRecognition: React.FC = () => {
 
     const recognizeFace = async () => {
         if (webcamRef.current && uploadedImage) {
-            console.log(uploadedImage)
-            const webcamCanvas = webcamRef.current.video;
-            const img = await faceapi.fetchImage(uploadedImage);
-            const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+            setLoading(true);
 
-            if (detections && webcamCanvas) {
-                const descriptor = detections.descriptor;
-                const faceMatcher = new faceapi.FaceMatcher(descriptor);
-                const videoDetections = await faceapi.detectAllFaces(webcamCanvas).withFaceLandmarks().withFaceDescriptors();
-                const match = videoDetections.some((videoDescriptor) => faceMatcher.findBestMatch(videoDescriptor.descriptor).label === 'match');
+            try {
+                // Ensure webCamImage is a valid base64-encoded string
+                const webCamImage = webcamRef.current.getScreenshot() || '';
 
-                setIsMatch(match);
-                isMatch ? toast.success('Face Matched!') : toast.error('Face does not match')
+                // Convert webcam image to base64-encoded string
+                const webCamBase64 = webCamImage.split(",")[1] || '';
+                console.log(webCamBase64, uploadedImage)
+
+                // Perform face recognition
+                // const response = await comparePics(webCamBase64, webCamBase64);
+                const response = await comparePics(webCamBase64, uploadedImage);
+
+                console.log(response);
+
+                if(response.score > 0.5) toast.success('Logged In Successfully!')
+                if(response.score < 0.5) toast.error('Face Not Found')
+
+                // Handle the response as needed
+            } catch (error) {
+                console.error('Error during face recognition:', error);
+                toast.error('Error during face recognition');
+            } finally {
+                setLoading(false);
             }
         }
     };
 
-    useEffect(() => {
-        const loadModelsAndRecognize = async () => {
-            await loadModels();
-            console.log('Models loaded successfully');
-            // Now that the models are loaded, you can perform any additional setup or recognition.
-        };
-
-        loadModelsAndRecognize();
-    }, []);
-
     return (
         <div className="flex flex-col items-center mt-8">
             <input type="file" accept="image/*" onChange={handleImageUpload} className="mb-4" />
-            {/*{uploadedImage && (*/}
-            {/*    <div className="mb-4">*/}
-            {/*        <img src={uploadedImage} alt="Uploaded" className="max-w-full h-auto" />*/}
-            {/*    </div>*/}
-            {/*)}*/}
             <Webcam ref={webcamRef} className="mb-4" />
             {isMatch !== null && (
                 <div className={`text-xl font-semibold ${isMatch ? 'text-green-500' : 'text-red-500'}`}>
                     {isMatch ? 'Face Matched!' : 'Face Not Matched!'}
                 </div>
             )}
-            <button
-                className="bg-[#333] p-4 text-white"
-                onClick={recognizeFace}
-            >
-                Capture
+            <button className="bg-[#333] p-4 text-white" onClick={recognizeFace} disabled={loading}>
+                {loading ? 'Recognizing...' : 'Capture'}
             </button>
         </div>
     );
 };
 
-export default FaceRecognition;
+export default FaceRegOpencv;
