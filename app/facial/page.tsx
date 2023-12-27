@@ -8,7 +8,7 @@ import { detectFace, loadFaceRecognition, matchFaces, matchFaceWithSsd } from '@
 
 // Import the pre-built browser-compatible bundle
 import '../../face-api.min.js'
-import '/face-api.min.js'
+// import '/face-api.min.js'
 
 
 const Home: React.FC = () => {
