@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json({
             success: true,
-            // data: authenticationParsed,
+            data: authenticationParsed,
             user: userWithCredential
         });
     } catch (error) {

@@ -14,7 +14,7 @@ export default function Fingerprint() {
     const handleAuth = async () => {
         try {
             const { authentication, challenge } = await fingerAuthClient();
-            const fetch = await axios.post("/authenticate", {
+            const fetch = await axios.post("/authenticate/fingerprint", {
                 authentication,
                 challenge,
             });
