@@ -132,7 +132,7 @@ export default function RegisterForm() {
 
             toast.success("account created");
 
-            if (res.statusText == "OK") {
+            if (res.statusText == "OK" || res.data.success ) {
                 router.push("/profile");
             }
         } catch (error) {
