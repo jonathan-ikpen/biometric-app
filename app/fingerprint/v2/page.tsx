@@ -4,10 +4,12 @@ import axios from "@/lib/axios";
 import { fingerRegClient, fingerAuthClient } from "@/lib/fingerprint_client";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/utils/contextfile"
 import Link from "next/link"
 
 export default function Fingerprint() {
     const router = useRouter();
+    const { isAuthenticated, user, login, logout } = useAuth();
     const [inputValue, setInputValue] = useState<string>("");
     const [color, setColor] = useState("#f7f7f7")
 
@@ -18,11 +20,13 @@ export default function Fingerprint() {
                 authentication,
                 challenge,
             });
-            console.log(fetch);
+            console.log(fetch.data.user);
             setColor('#0000FF')
+
 
             setTimeout(() => {
                 if (fetch.statusText == "OK") {
+                    login(fetch.data.user)
                     toast.success("login successful!");
                     router.push("/profile");
                 }

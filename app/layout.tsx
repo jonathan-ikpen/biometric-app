@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import toast, { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Header from "@/components/shared/header";
+import { AuthProvider } from "@/utils/contextfile";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <Header/>
-        <Toaster />
-        <main className={'flex items-center justify-center min-h-screen fh-screen'}>
-          {children}
-        </main>
+        <AuthProvider>
+          <Header/>
+          <Toaster />
+
+          <main className={'flex items-center justify-center min-h-screen fh-screen'}>
+            {children}
+          </main>
+      </AuthProvider>
       </body>
     </html>
   );

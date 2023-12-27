@@ -1,19 +1,19 @@
 "use client";
 import React from "react";
 import { Button } from "../ui/button";
-// import { useSignOut, useAuthState } from "";
 import toast from "react-hot-toast";
+import { useAuth } from "@/utils/contextfile";
 
 const SignOutButton = () => {
-  // const [signOut, loading, error] = useSignOut();
+  const { isAuthenticated, user, login, logout } = useAuth();
 
   const handleSignOut = async () => {
-    // const success = await signOut();
-    // if (success) {
-    //   toast.success("You are signed out");
-    // } else {
-    //   toast.error("error: " + error);
-    // }
+    try {
+      logout();
+      toast.success("You are signed out");
+    } catch(error) {
+      toast.error("error: " + error);
+    }
   };
 
   return (

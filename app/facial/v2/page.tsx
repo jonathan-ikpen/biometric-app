@@ -4,6 +4,7 @@ import Webcam from 'react-webcam';
 import toast from 'react-hot-toast';
 import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/utils/contextfile";
 
 const comparePics = async (webCamImage: string, uploadedImage: string) => {
     try {
@@ -39,6 +40,7 @@ const comparePics = async (webCamImage: string, uploadedImage: string) => {
 
 const FaceRegOpencv = () => {
     const router = useRouter();
+    const { isAuthenticated, user, login, logout } = useAuth();
     const webcamRef = useRef<Webcam>(null);
     const [isMatch, setIsMatch] = useState<boolean | null>(null);
     const [loading, setLoading] = useState(false);
@@ -127,6 +129,8 @@ const FaceRegOpencv = () => {
                 console.log(response.data);
 
                 if(response.data.data.score > 0.5) {
+                    console.log(response.data.user)
+                    login(response.data.user)
                     toast.success('Login Successful!')
                     router.push('/profile')
                 }

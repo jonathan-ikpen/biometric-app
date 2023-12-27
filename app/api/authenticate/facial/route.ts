@@ -57,6 +57,7 @@ export async function POST(req: Request) {
         return NextResponse.json({
             success: true,
             data: result,
+            user: userFace
         });
     } catch (error) {
         console.log("Server Authentication: ", error);
