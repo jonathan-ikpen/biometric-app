@@ -37,7 +37,7 @@ export async function POST(req: Request) {
             origin:
                 process.env.NODE_ENV !== "production"
                     ? "http://localhost:3000"
-                    : "https://biometric-app.vercel.app",
+                    : "https://biometric-app-ekzh.onrender.com",
             userVerified: true,
             counter: -1,
         };
