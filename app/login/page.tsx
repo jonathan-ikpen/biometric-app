@@ -5,7 +5,7 @@ export default function SignIn () {
         <div>
             <p className={'text-center mb-20 font-semibold'}>Sign In By: </p>
             <div className='flex gap-4 justify-center items-center'>
-                <Link href={'/facial/v2'} className={' flex flex-col justify-center items-center w-fit'}>
+                <Link href={'/facial'} className={' flex flex-col justify-center items-center w-fit'}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="50%"
@@ -23,7 +23,7 @@ export default function SignIn () {
                     <span className="text-sm">face id</span>
                 </Link>
                 <p>OR</p>
-                <Link href={'/fingerprint/v2'} className={' flex flex-col justify-center items-center w-fit'}>
+                <Link href={'/fingerprint'} className={' flex flex-col justify-center items-center w-fit'}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="50%"
