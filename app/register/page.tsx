@@ -146,7 +146,7 @@ export default function RegisterForm() {
         <form className=" flex flex-col mt-24 mb-20 px-10 text-[#333] max-w-7xl w-full fspace-y-8"
               onSubmit={handleSubmit(onSubmit)}>
             <h1 className=" text-center text-3xl font-bold pb-8">Register Here</h1>
-            <div className={'text-lg grid grid-cols-2 gap-20'}>
+            <div className={'text-lg grid md:grid-cols-2 gap-20'}>
                 <div className={'flex flex-col gap-4'}>
                     <div className="flex flex-col gap-1">
                         <label className={'font-semibold'}>First Name</label>

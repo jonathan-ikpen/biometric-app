@@ -147,7 +147,7 @@ const FaceRegOpencv = () => {
     };
 
     return (
-        <div className="flex flex-col items-center mt-24">
+        <div className="flex flex-col px-10 items-center mt-24">
             {/*<input type="file" accept="image/*" onChange={handleImageUpload} className="mb-4" />*/}
             {!usernameAdded && (
                 <div className={'flex flex-col gap-2'}>

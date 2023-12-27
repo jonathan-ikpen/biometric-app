@@ -53,7 +53,7 @@ export default function Home() {
   };
 
   return (
-          <div className="max-h-screen flex items-center justify-center text-[#333] px-40">
+          <div className="max-h-screen flex items-center justify-center text-[#333] px-10 md:px-40">
             <div className="text-center">
               <h1 className="text-4xl font-bold pb-10 border-b border-[#666]">Welcome to PTI Student Database System</h1>
               <div className="text-lg py-6 flex flex-col gap-4">

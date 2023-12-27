@@ -8,7 +8,7 @@ const Profile = () => {
     console.log(user)
 
   return (
-      <div className='w-full px-10 my-20'>
+      <div className='w-full px-10 my-24'>
           {/*<h1 className='text-sm pb-14'>Hi <span className='italic'>{user.username}</span>! 👋</h1>*/}
               <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-20 place-content-between">
                   <div key={user.id} className="bg-white w-full p-4 shadow-md rounded-md">
