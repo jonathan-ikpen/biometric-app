@@ -152,9 +152,9 @@ const FaceRegOpencv = () => {
             {/*<input type="file" accept="image/*" onChange={handleImageUpload} className="mb-4" />*/}
             {!usernameAdded && (
                 <div className={'flex flex-col gap-2'}>
-                    <label className={'text-2xl font-bold text-[#333]'}>What's your username?</label>
+                    <label className={'text-2xl font-bold text-[#333]'}>What&apos;s your username?</label>
                     <span
-                        className={'text-lg'}>It's usually a combination of your firstname and lastname ex. jonathanikpen</span>
+                        className={'text-lg'}>It&apos;s usually a combination of your firstname and lastname ex. jonathanikpen</span>
                     <input type="text" onKeyDown={handleUsername}
                            className="mb-4 text-2xl w-full h-20 border-b-2 border-slate-600 active:border-none active:outline-0 outline-0"/>
                 </div>
