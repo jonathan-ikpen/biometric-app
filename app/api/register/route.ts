@@ -5,7 +5,7 @@ import prismadb from "@/lib/prismadb";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { registration, challenge, username } = body;
+    const { registration, challenge, username, fname, lname, phone, email, address, state, city, lga, mat, department, yearOfStudy, yearOfGraduation, faceUpload } = body;
 
     console.log(registration, challenge);
 
@@ -34,15 +34,20 @@ export async function POST(req: Request) {
 
     const createUser = await prismadb.user.create({
       data: {
-        username,
-        email: "jay@test.com",
-        firstname: "jonathan",
-        lastname: "ikpen",
-        phone: "08127964509",
-        matno: "m.20/nd/csit/14533",
-        address: "comprehensive rd., amukpe, sapele, delta",
-        department: "computer science",
-        yearofstudy: "2020",
+        username: username,
+        email: email,
+        firstname: fname,
+        lastname: lname,
+        phone: phone,
+        state: state,
+        city: city,
+        lga: lga,
+        matno: mat,
+        address: address,
+        department: department,
+        yearofstudy: yearOfStudy,
+        yearofgraduation: yearOfGraduation,
+        faceUpload: faceUpload,
         credentials: {
           create: [
             {

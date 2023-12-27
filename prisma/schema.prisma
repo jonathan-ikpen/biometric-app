@@ -17,10 +17,15 @@ model User {
   firstname  String?
   lastname   String
   phone      String
+  state      String
+  city       String
+  lga        String
   matno      String
   address   String
   department  String
   yearofstudy   String
+  yearofgraduation  String
+  faceUpload        String
   credentials   Credential[]
 }
 

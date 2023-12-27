@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         <Header/>
         <Toaster />
-        <main className={'flex items-center justify-center max-h-screen h-screen'}>
+        <main className={'flex items-center justify-center min-h-screen fh-screen'}>
           {children}
         </main>
       </body>
