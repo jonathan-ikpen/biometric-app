@@ -1,5 +1,5 @@
 "use client"
-import axios from "axios"
+import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
 
 // import { useAuthState } from "react-firebase-hooks/auth";
@@ -125,7 +125,7 @@ export default function RegisterForm() {
             }
             console.log(data)
 
-            const res = await axios.post("/api/register", data);
+            const res = await axios.post("/register", data);
 
             console.log(res);
 
