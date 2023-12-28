@@ -25,7 +25,7 @@ export default function Fingerprint() {
 
 
       setTimeout(() => {
-        if (fetch.statusText == "OK") {
+        if (fetch.statusText == "OK" || fetch.data.success) {
           login(fetch.data.user)
           toast.success("login successful!");
           router.push("/profile");
