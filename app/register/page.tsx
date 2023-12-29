@@ -68,6 +68,7 @@ export default function RegisterForm() {
         username: '',
         text: 'Upload your fingerprint',
     })
+    const [loading, setLoading] = useState(false)
 
     const {
         register,
@@ -101,6 +102,7 @@ export default function RegisterForm() {
 
 
     const onSubmit: SubmitHandler<Data> = async (values) => {
+        setLoading(true)
         const faceUpload = await readFileAsBase64(values.faceUpload?.[0])
 
         try {
@@ -138,6 +140,8 @@ export default function RegisterForm() {
         } catch (error) {
             console.log(error);
             toast.error("error: " + error);
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -224,8 +228,8 @@ export default function RegisterForm() {
                         {errors.registration && <span className=" text-red-600 text-xs ">Invalid Finger print</span>}
                     </div>
 
-                    <Button className="w-full bg-[#222]">
-                        Submit
+                    <Button className="w-full bg-[#222]" disabled={loading}>
+                        {loading ? 'Submit' : 'Sending...'}
                     </Button>
                 </div>
 
