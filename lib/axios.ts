@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseURL = "http://localhost:3000/api";
-const publicBaseURL = "https://biometric-app-ekzh.onrender.com/api";
+const publicBaseURL = "https://biometric-app.vercel.app/api";
 
 export default axios.create({
   baseURL: process.env.NODE_ENV === "production" ? publicBaseURL : baseURL,

@@ -12,8 +12,11 @@ export default function Fingerprint() {
   const { isAuthenticated, user, login, logout } = useAuth();
   const [inputValue, setInputValue] = useState<string>("");
   const [color, setColor] = useState("#f7f7f7")
+  const [loading, setLoading] = useState(false);
+
 
   const handleAuth = async () => {
+    setLoading(true)
     try {
       const { authentication, challenge } = await fingerAuthClient();
       const fetch = await axios.post("/authenticate/fingerprint", {
@@ -35,6 +38,8 @@ export default function Fingerprint() {
     } catch (error) {
       console.log(error);
       toast.error("login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,8 +69,9 @@ export default function Fingerprint() {
               <button
                   className=" p-4 bg-slate-100 text-xs ml-6 rounded"
                   onClick={handleAuth}
+                  disabled={loading}
               >
-                Authenticate
+                {loading ? 'Checking...' : 'Authenticate' }
               </button>
             </div>
           </div>
