@@ -229,7 +229,7 @@ export default function RegisterForm() {
                     </div>
 
                     <Button className="w-full bg-[#222]" disabled={loading}>
-                        {loading ? 'Submit' : 'Sending...'}
+                        {!loading ? 'Submit' : 'Sending...'}
                     </Button>
                 </div>
 
