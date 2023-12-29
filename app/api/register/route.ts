@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       origin:
         process.env.NODE_ENV !== "production"
           ? "http://localhost:3000"
-          : "https://biometric-app-ekzh.onrender.com",
+          : "https://biometric-app.vercel.app",
     };
 
     const registrationParsed = await server.verifyRegistration(
