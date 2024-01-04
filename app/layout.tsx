@@ -4,6 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Header from "@/components/shared/header";
 import { AuthProvider } from "@/utils/contextfile";
+// import { getUsers } from "@/app/server/action";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,11 +13,12 @@ export const metadata: Metadata = {
   description: "PTI Student Biometric DataBase",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
