@@ -5,9 +5,7 @@ import toast from 'react-hot-toast';
 import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/utils/contextfile";
-import { dotPulse } from 'ldrs'
-
-dotPulse.register()
+import DotPulse from "@/components/shared/dotPulse";
 
 const comparePics = async (webCamImage: string, uploadedImage: string) => {
     try {
@@ -166,11 +164,7 @@ const FaceRegOpencv = () => {
             {loading && (
                 <div
                     className={'mb-32'}>
-                    <l-dot-pulse
-                        size="43"
-                        speed="1.3"
-                        color="#333"
-                    ></l-dot-pulse>
+                    <DotPulse/>
                 </div>
             )}
 

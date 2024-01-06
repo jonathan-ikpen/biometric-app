@@ -1,8 +1,6 @@
 "use client"
 import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
-// import { lineSpinner } from 'ldrs'
-import { dotPulse } from 'ldrs'
 
 
 // import Link from "next/link";
@@ -14,8 +12,8 @@ import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 import React, {useState} from "react";
 import {fingerAuthClient, fingerRegClient} from "@/lib/fingerprint_client";
+import DotPulse from "@/components/shared/dotPulse";
 
-dotPulse.register()
 interface FingerRegResponse {
     registration: string;
     challenge: string;
@@ -60,7 +58,6 @@ const readFileAsBase64 = (file: File): Promise<string> => {
 
 
 export default function RegisterForm() {
-    // lineSpinner.register()
 
     // const [userAuth, loading] = useAuthState(auth);
     const [stage, setStage] = useState(1)
@@ -242,11 +239,7 @@ export default function RegisterForm() {
             {loading && (
                 <div
                     className={'fixed overflow-hidden inset-0 z-50 bg-background/50 backdrop-blur-xs flex justify-center items-center'}>
-                    <l-dot-pulse
-                        size="43"
-                        speed="1.3"
-                        color="#333"
-                    ></l-dot-pulse>
+                    <DotPulse/>
                 </div>
             )}
 
