@@ -1,10 +1,11 @@
 "use client"
 import { dotPulse } from 'ldrs'
+import 'ldrs/dotPulse'
 import React from "react";
 
-dotPulse.register()
 
 
+// dotPulse.register()
 
 export default function DotPulse() {
     return (
