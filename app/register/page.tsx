@@ -1,9 +1,10 @@
 "use client"
 import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
+// import { lineSpinner } from 'ldrs'
+import { dotPulse } from 'ldrs'
 
-// import { useAuthState } from "react-firebase-hooks/auth";
-// import { auth } from "@/lib/firebase";
+
 // import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,9 @@ const readFileAsBase64 = (file: File): Promise<string> => {
 
 
 export default function RegisterForm() {
+    // lineSpinner.register()
+    dotPulse.register()
+
     // const [userAuth, loading] = useAuthState(auth);
     const [stage, setStage] = useState(1)
     const router = useRouter()
@@ -234,6 +238,17 @@ export default function RegisterForm() {
                 </div>
 
             </div>
+
+            {loading && (
+                <div
+                    className={'fixed overflow-hidden inset-0 z-50 bg-background/50 backdrop-blur-xs flex justify-center items-center'}>
+                    <l-dot-pulse
+                        size="43"
+                        speed="1.3"
+                        color="#333"
+                    ></l-dot-pulse>
+                </div>
+            )}
 
         </form>
     )

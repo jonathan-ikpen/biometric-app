@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/utils/contextfile";
+import { dotPulse } from 'ldrs'
 
 const comparePics = async (webCamImage: string, uploadedImage: string) => {
     try {
@@ -39,6 +40,7 @@ const comparePics = async (webCamImage: string, uploadedImage: string) => {
 };
 
 const FaceRegOpencv = () => {
+    dotPulse.register()
     const router = useRouter();
     const { isAuthenticated, user, login, logout } = useAuth();
     const webcamRef = useRef<Webcam>(null);
@@ -159,7 +161,18 @@ const FaceRegOpencv = () => {
                            className="mb-4 text-2xl w-full h-20 border-b-2 border-slate-600 active:border-none active:outline-0 outline-0"/>
                 </div>
             )}
-            {usernameAdded && <Webcam ref={webcamRef} className="mb-4"/>}
+            {usernameAdded && !loading && <Webcam ref={webcamRef} className="mb-4"/>}
+            {loading && (
+                <div
+                    className={'mb-32'}>
+                    <l-dot-pulse
+                        size="43"
+                        speed="1.3"
+                        color="#333"
+                    ></l-dot-pulse>
+                </div>
+            )}
+
             {isMatch !== null && (
                 <div className={`text-xl font-semibold ${isMatch ? 'text-green-500' : 'text-red-500'}`}>
                     {isMatch ? 'Face Matched!' : 'Face Not Matched!'}

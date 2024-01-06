@@ -19,12 +19,13 @@ export default function Fingerprint() {
     setLoading(true)
     try {
       const { authentication, challenge } = await fingerAuthClient();
+      setColor('#0000FF')
       const fetch = await axios.post("/authenticate/fingerprint", {
         authentication,
         challenge,
       });
       console.log(fetch.data.user);
-      setColor('#0000FF')
+      setColor('#00ff04')
 
 
       setTimeout(() => {
@@ -36,6 +37,7 @@ export default function Fingerprint() {
       }, 1000)
 
     } catch (error) {
+      setColor('#ff003b')
       console.log(error);
       toast.error("login failed");
     } finally {
