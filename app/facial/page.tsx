@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/utils/contextfile";
 import { dotPulse } from 'ldrs'
 
+dotPulse.register()
+
 const comparePics = async (webCamImage: string, uploadedImage: string) => {
     try {
         // Ensure both images are valid base64-encoded strings
@@ -40,7 +42,6 @@ const comparePics = async (webCamImage: string, uploadedImage: string) => {
 };
 
 const FaceRegOpencv = () => {
-    dotPulse.register()
     const router = useRouter();
     const { isAuthenticated, user, login, logout } = useAuth();
     const webcamRef = useRef<Webcam>(null);

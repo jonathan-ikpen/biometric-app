@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import React, {useState} from "react";
 import {fingerAuthClient, fingerRegClient} from "@/lib/fingerprint_client";
 
+dotPulse.register()
 interface FingerRegResponse {
     registration: string;
     challenge: string;
@@ -60,7 +61,6 @@ const readFileAsBase64 = (file: File): Promise<string> => {
 
 export default function RegisterForm() {
     // lineSpinner.register()
-    dotPulse.register()
 
     // const [userAuth, loading] = useAuthState(auth);
     const [stage, setStage] = useState(1)
