@@ -146,7 +146,7 @@ export default function RegisterForm() {
             }
         } catch (error: any) {
             console.log(error);
-            toast.error("Username already exists");
+            toast.error("Oops! You may have used this name before. If not Try Again");
         } finally {
             setLoading(false)
         }
