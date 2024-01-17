@@ -77,6 +77,7 @@ export default function RegisterForm() {
         handleSubmit,
         watch,
         formState: {errors},
+        setError
     } = useForm<Data>()
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +104,11 @@ export default function RegisterForm() {
 
 
     const onSubmit: SubmitHandler<Data> = async (values) => {
+
+        if(Object.keys(fingerData.registration).length === 0 && fingerData.registration.constructor === Object) {
+            return alert('please add fingerprint')
+        }
+
         setLoading(true)
         const faceUpload = await readFileAsBase64(values.faceUpload?.[0])
 
@@ -138,9 +144,9 @@ export default function RegisterForm() {
             if (res.statusText == "OK" || res.data.success ) {
                 router.push("/profile");
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
-            toast.error("error: " + error);
+            toast.error("Username already exists");
         } finally {
             setLoading(false)
         }
@@ -219,14 +225,14 @@ export default function RegisterForm() {
 
                     <div className="flex flex-col gap-1">
                         <label className={'font-semibold'}>Upload Picture</label>
-                        <Input placeholder="Upload your picture" type={'file'} accept={"image/*"} className={'cursor-pointer'} {...register("faceUpload", { required: false })} />
+                        <Input placeholder="Upload your picture" type={'file'} accept={"image/*"} className={'cursor-pointer'} {...register("faceUpload", { required: true })} />
                         {errors.faceUpload && <span className=" text-red-600 text-xs ">Invalid Picture Upload</span>}
                     </div>
 
                     <div className="flex flex-col gap-1">
                         <label className={'font-semibold'}>Add Fingerprint</label>
-                        <Input placeholder="Upload your fingerprint" type={'button'} value={fingerData.text} className={'cursor-pointer'} onClick={handleFingerPrint} />
-                        {errors.registration && <span className=" text-red-600 text-xs ">Invalid Finger print</span>}
+                        <Input placeholder="Upload your fingerprint" type={'button'} value={fingerData.text} className={'cursor-pointer'} onClick={handleFingerPrint} required />
+                        {errors.registration && <span className=" text-red-600 text-xs ">Invalid Fingerprint Data</span>}
                     </div>
 
                     <Button className="w-full bg-[#222]" disabled={loading}>
