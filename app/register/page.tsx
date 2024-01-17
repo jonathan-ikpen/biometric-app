@@ -115,7 +115,7 @@ export default function RegisterForm() {
         try {
             //   logic here
             const data = {
-                username: fingerData.username,
+                username: values.fname+values.lname,
                 fname: values.fname,
                 lname: values.lname,
                 phone: values.phone,
