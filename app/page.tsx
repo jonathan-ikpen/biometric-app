@@ -60,7 +60,7 @@ export default function Home() {
                 <p className={'font-bold'}>🔒 Secure Authentication</p>
                 <p className={'text-left'}> Experience enhanced security with facial recognition and fingerprint technology, ensuring accurate
                   and efficient student authentication.</p>
-                <p className={'italic text-[#666]'}>Built by Project Group 7</p>
+                <p className={'italic text-[#666]'}>Built by Project Group 13</p>
               </div>
               <Link href={'/register'} className="bg-[#333] text-white p-4 font-bold mt-10">
                 Get Started
